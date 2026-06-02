@@ -60,7 +60,7 @@ frontend/
 ### 1. Clone the Repository
 
 ```
-git clone https://github.com/your-username/audio-transcriber.git
+git clone https://github.com/your-username/ai-audio-transcriber.git
 cd audio-transcriber
 ```
 
