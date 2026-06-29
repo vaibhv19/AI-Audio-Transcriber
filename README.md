@@ -1,135 +1,183 @@
-# 🎙️ AI Audio Transcriber
+# Audio to Text Transcriber
 
-### Spring Boot + Spring AI + React.js
+A full-stack web application that uploads an audio file, sends it to a Spring Boot backend, and returns an AI-generated transcription using OpenAI Whisper through Spring AI.
 
-A full-stack web application that converts audio files into text using AI-powered transcription. Built using **Spring Boot (backend)**, **Spring AI (LLM integration)**, and **React.js (frontend)**.
+## Overview
 
----
+This project consists of two parts:
 
-## 🚀 Features
+- A backend API built with Java, Spring Boot, and Spring AI
+- A frontend interface built with React and Vite
 
-* 🎧 Upload audio files for transcription
-* 🤖 AI-powered speech-to-text using Spring AI
-* ⚡ REST API built with Spring Boot
-* 🌐 Interactive frontend using React.js
-* 🔄 Seamless frontend-backend communication
-* 🎨 Basic responsive UI with CSS
+The app lets users upload audio files from the browser, sends them to the backend, and displays the transcribed text in the UI.
 
----
+## Features
 
-## 🛠️ Tech Stack
+- Upload audio files from the browser
+- Send audio to a REST API for transcription
+- Use OpenAI Whisper for speech-to-text conversion
+- Display the transcription result in the frontend
+- CORS-enabled communication between frontend and backend
+
+## Tech Stack
 
 ### Backend
-
-* Java
-* Spring Boot
-* Spring AI
-* REST APIs
+- Java 21
+- Spring Boot 3.3.5
+- Spring AI
+- OpenAI audio transcription integration
+- Maven
 
 ### Frontend
+- React 19
+- Vite
+- Axios
+- CSS
 
-* React.js
-* Axios
+## Project Structure
 
-### Tools & Others
-
-* Maven
-* JSON
-
----
-
-## 🧩 Project Structure
-
-```
-backend/
- ├── controller/
- ├── service/
- ├── config/
- └── application.properties
-
-frontend/
- ├── components/
- ├── services/
- └── App.js
-```
-
----
-
-## ⚙️ Setup & Installation
-
-### 1. Clone the Repository
-
-```
-git clone https://github.com/your-username/ai-audio-transcriber.git
-cd audio-transcriber
+```text
+Audio to Text Transcriber/
+├── audio-transcribe/                 # Spring Boot backend
+│   ├── src/main/java/com/audio/transcribe/
+│   │   ├── AudioTranscribeApplication.java
+│   │   ├── TranscriptionController.java
+│   │   └── WebConfig.java
+│   ├── src/main/resources/application.properties
+│   └── pom.xml
+├── Audio-transcribe-frontend/        # React frontend
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── AudioUploader.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
+└── README.md
 ```
 
----
+## Prerequisites
 
-### 2. Backend Setup (Spring Boot)
+Before running the project, make sure you have:
 
-* Open the backend folder in your IDE
-* Configure your API key in `application.properties`
+- Java 21 or later
+- Maven
+- Node.js and npm
+- An OpenAI API key
 
+## Backend Setup
+
+1. Open a terminal in the backend folder:
+
+```bash
+cd audio-transcribe
 ```
-spring.ai.openai.api-key=YOUR_API_KEY
+
+2. Set your OpenAI API key as an environment variable.
+
+On PowerShell:
+
+```powershell
+$env:API_KEY="your_openai_api_key"
 ```
 
-* Run the application
+On macOS/Linux:
 
----
-
-### 3. Frontend Setup (React)
-
+```bash
+export API_KEY="your_openai_api_key"
 ```
-cd frontend
+
+3. Start the backend server:
+
+```bash
+./mvnw spring-boot:run
+```
+
+On Windows, you can use:
+
+```powershell
+mvnw.cmd spring-boot:run
+```
+
+The backend will run on:
+
+```text
+http://localhost:8080
+```
+
+## Frontend Setup
+
+1. Open a second terminal in the frontend folder:
+
+```bash
+cd Audio-transcribe-frontend
+```
+
+2. Install dependencies:
+
+```bash
 npm install
-npm start
 ```
 
----
+3. Start the Vite development server:
 
-## 🔄 How It Works
+```bash
+npm run dev
+```
 
-1. User uploads an audio file from the frontend
-2. React sends the file to the Spring Boot backend via REST API
-3. Spring AI processes the audio using an AI model
-4. Transcribed text is returned to the frontend
-5. UI displays the transcript to the user
+The frontend will run on:
 
----
+```text
+http://localhost:5173
+```
 
-## 📸 Demo Flow
+## How It Works
 
-* Upload Audio → Process → View Transcript
+1. The user selects an audio file in the React UI.
+2. The frontend sends the file to the backend endpoint at `/api/transcribe`.
+3. The Spring Boot backend writes the uploaded file to a temporary location.
+4. Spring AI sends the file to OpenAI Whisper for transcription.
+5. The transcribed text is returned to the frontend and displayed on the page.
 
----
+## API Endpoint
 
-## 📌 Use Cases
+### Upload and transcribe audio
 
-* 🎓 Lecture transcription
-* 📝 Voice notes conversion
-* 🎙️ Podcast transcription
-* 📚 Study material generation
+```http
+POST /api/transcribe
+Content-Type: multipart/form-data
+```
 
----
+Form field:
 
-## 🚧 Future Improvements
+- `file`: audio file to transcribe
 
-* Real-time transcription
-* Multi-language support
-* Transcript download (PDF/Doc)
-* User authentication
-* Database integration
+Example with curl:
 
----
+```bash
+curl -X POST http://localhost:8080/api/transcribe \
+  -F "file=@/path/to/audio.wav"
+```
 
-## 👨‍💻 Author
+## Configuration Notes
 
-**Vaibhav Gupta**
+The backend is configured in [audio-transcribe/src/main/resources/application.properties](audio-transcribe/src/main/resources/application.properties) to use:
 
----
+- the OpenAI API key from the `API_KEY` environment variable
+- the Whisper transcription model
+- the default English language setting
 
-## ⭐ Acknowledgment
+The frontend is configured to call the backend at `http://localhost:8080`.
 
-This project was built as part of learning **Spring AI and full-stack development**, focusing on integrating AI capabilities into real-world applications.
+## Future Improvements
+
+Possible enhancements for this project include:
+
+- Support for multiple languages
+- Real-time or streaming transcription
+- Better error handling and loading states
+- Transcript download as text or file
+- User authentication and saved history
+
+## Author
+
+Vaibhav Gupta
